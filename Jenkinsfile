@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      inheritFrom "deployment"
+      inheritFrom "deployment sonar"
       yaml '''
 spec:
     containers:
@@ -26,6 +26,13 @@ spec:
           sh "go mod vendor"
           sh "go vet ./..."
           sh "go test ./... -o coverage.out"
+        }
+      }
+      post {
+        always {
+          container('sonar') {
+            sh('sonar-scanner -Dsonar.login=$SONAR_LOGIN')
+          }
         }
       }
     }
