@@ -25,7 +25,7 @@ spec:
         container("golang") {
           sh "go mod vendor"
           sh "go vet ./..."
-          sh "go test ./... -o coverage.out"
+          sh "go test -coverprofile cover.out ./..."
         }
       }
       post {
