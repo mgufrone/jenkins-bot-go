@@ -43,9 +43,7 @@ spec:
             def data = ["auths": ["ghcr.io": ["username": env.GITHUB_USR, "password": env.GITHUB_PSW]]]
             writeJSON file: "docker-config.json", json: data
             sh "cp docker-config.json /kaniko/.docker/config.json"
-            sh "cp composer.production.json composer.json"
-            sh "cp composer.production.lock composer.lock"
-            sh "/kaniko/executor --context . --dockerfile ./build.Dockerfile --destination ghcr.io/mgufrone/jenkins-bot:${env.GIT_BRANCH} --destination ghcr.io/mgufrone/symfony-test:${env.GIT_COMMIT}"
+            sh "/kaniko/executor --context . --dockerfile ./Dockerfile --destination ghcr.io/mgufrone/jenkins-bot:${env.GIT_BRANCH} --destination ghcr.io/mgufrone/symfony-test:${env.GIT_COMMIT}"
           }
         }
         container('helm') {
