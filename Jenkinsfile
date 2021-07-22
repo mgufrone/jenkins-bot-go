@@ -6,7 +6,7 @@ pipeline {
 spec:
     containers:
     - name: golang
-      image: golang:1.16-alpine
+      image: golang:1.16
       command:
       - sleep
       args:
