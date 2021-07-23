@@ -24,7 +24,7 @@ spec:
       steps {
         script {
           try {
-            copyArtifacts(projectName: 'jenkins-bot', selector: "lastSuccessful");
+            copyArtifacts(projectName: 'jenkins-bot', fingerprintArtifacts: true, filter: "vendor/**/*");
             sh "ls -lah"
           } catch (Exception e) {
             echo "something wrong: $e"
