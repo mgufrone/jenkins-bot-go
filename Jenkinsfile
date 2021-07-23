@@ -23,11 +23,15 @@ spec:
     stage("Build") {
       steps {
         script {
-          try {
-            copyArtifacts(projectName: 'jenkins-bot', fingerprintArtifacts: true, filter: "vendor/**/*");
-            sh "ls -lah"
-          } catch (Exception e) {
-            echo "something wrong: $e"
+          if (currentBuild.previousBuild) {
+            try {
+              copyArtifacts(projectName: currentBuild.projectName,
+                            selector: specific("${currentBuild.previousBuild.number}"))
+              echo("The current build is ${currentBuild.number}")
+              echo("The previous build artifact was: ${previousFile}")
+            } catch(err) {
+              // ignore error
+            }
           }
         }
         container("golang") {
@@ -39,7 +43,7 @@ spec:
       }
       post {
         success {
-          archiveArtifacts artifacts: "vendor/**/*", fingerprint: true
+          archiveArtifacts artifacts: "vendor/**/*"
         }
         always {
           junit "report.xml"
