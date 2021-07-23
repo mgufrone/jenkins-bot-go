@@ -24,7 +24,7 @@ spec:
       steps {
         script {
           try {
-            unarchive mapping:["vendor/**/*": "vendor/"]
+            copyArtifacts(projectName: 'jenkins-bot', selectors: lastSuccessful);
             sh "ls -lah"
           } catch (Exception e) {
             echo "something wrong: $e"
@@ -53,14 +53,15 @@ spec:
       steps {
         container('kaniko') {
           script {
+            env.IMAGE_TAG = env.GIT_COMMIT.subString(0, 6)
             def data = ["auths": ["ghcr.io": ["username": env.GITHUB_USR, "password": env.GITHUB_PSW]]]
             writeJSON file: "docker-config.json", json: data
             sh "cp docker-config.json /kaniko/.docker/config.json"
-            sh "/kaniko/executor --context . --dockerfile ./Dockerfile --destination ghcr.io/mgufrone/jenkins-bot:${env.GIT_BRANCH} --destination ghcr.io/mgufrone/jenkins-bot:${env.GIT_COMMIT}"
+            sh "/kaniko/executor --context . --dockerfile ./Dockerfile --destination ghcr.io/mgufrone/jenkins-bot:${env.GIT_BRANCH} --destination ghcr.io/mgufrone/jenkins-bot:${env.IMAGE_TAG}"
           }
         }
         container('helm') {
-          sh "helm upgrade --install jenkins-bot ./jenkin-bots --set image.tag=${env.GIT_COMMIT}"
+          sh "helm upgrade --install jenkins-bot ./jenkin-bots --set image.tag=${env.IMAGE_TAG}"
         }
       }
     }
