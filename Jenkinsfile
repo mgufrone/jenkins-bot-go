@@ -26,7 +26,7 @@ spec:
           if (currentBuild.previousBuild) {
             try {
               copyArtifacts(projectName: currentBuild.projectName,
-                            selector: "lastSuccessful")
+                            selector: lastSuccessful())
               sh "ls -lah"
             } catch(err) {
               echo "$err"
