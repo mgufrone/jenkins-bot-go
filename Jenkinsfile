@@ -24,7 +24,7 @@ spec:
       steps {
         script {
           try {
-            copyArtifacts(projectName: 'jenkins-bot', selectors: lastSuccessful);
+            copyArtifacts(projectName: 'jenkins-bot', selectors: "lastSuccessful");
             sh "ls -lah"
           } catch (Exception e) {
             echo "something wrong: $e"
