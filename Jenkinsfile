@@ -24,7 +24,7 @@ spec:
       steps {
         script {
           try {
-            unarchive mapping:["vendor/": "."]
+            unarchive mapping:["vendor/**/*": "vendor/"]
             sh "ls -lah"
           } catch (Exception e) {
             echo "something wrong: $e"
