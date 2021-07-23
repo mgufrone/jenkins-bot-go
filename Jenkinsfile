@@ -51,6 +51,9 @@ spec:
     }
     stage("Deployment") {
       steps {
+        container("golang") {
+          sh "CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app ."
+        }
         container('kaniko') {
           script {
             env.IMAGE_TAG = env.GIT_COMMIT.substring(0, 6)
