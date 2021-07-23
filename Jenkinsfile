@@ -23,13 +23,18 @@ spec:
     stage("Build") {
       steps {
         container("golang") {
+          sh "go get gotest.tools/gotestsum"
           sh "go mod vendor"
           sh "go vet ./..."
-          sh "go test -coverprofile cover.out ./..."
+          sh "gotestsum --format dots --junit-file report.xml"
         }
       }
       post {
+        success {
+          archiveArtifacts artifacts: "vendor/**/*", fingerprint: true
+        }
         always {
+          junit "report.xml"
           container('sonar') {
             sh('sonar-scanner -Dsonar.login=$SONAR_LOGIN')
           }
