@@ -53,7 +53,7 @@ spec:
       steps {
         container('kaniko') {
           script {
-            env.IMAGE_TAG = env.GIT_COMMIT.subString(0, 6)
+            env.IMAGE_TAG = env.GIT_COMMIT.substring(0, 6)
             def data = ["auths": ["ghcr.io": ["username": env.GITHUB_USR, "password": env.GITHUB_PSW]]]
             writeJSON file: "docker-config.json", json: data
             sh "cp docker-config.json /kaniko/.docker/config.json"
