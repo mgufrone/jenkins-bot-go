@@ -27,8 +27,7 @@ spec:
             try {
               copyArtifacts(projectName: currentBuild.projectName,
                             selector: "lastSuccessful")
-              echo("The current build is ${currentBuild.number}")
-              echo("The previous build artifact was: ${previousFile}")
+              sh "ls -lah"
             } catch(err) {
               // ignore error
             }
