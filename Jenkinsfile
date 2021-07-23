@@ -22,6 +22,14 @@ spec:
   stages {
     stage("Build") {
       steps {
+        script {
+          try {
+            unarchive mapping:["vendor/": "."]
+            sh "ls -lah"
+          } catch (Exception e) {
+            echo "something wrong: $e"
+          }
+        }
         container("golang") {
           sh "go get gotest.tools/gotestsum"
           sh "go mod vendor"
