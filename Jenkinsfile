@@ -29,6 +29,7 @@ spec:
                             selector: "lastSuccessful")
               sh "ls -lah"
             } catch(err) {
+              echo err
               // ignore error
             }
           }
