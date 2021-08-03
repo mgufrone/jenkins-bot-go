@@ -178,12 +178,16 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 	cli := newJenkinsClient(jenkinsUri.Host, repo, branch, buildID)
 	err := cli.submitInput(action)
 	client.Ack(*req)
-	blocks := pl.Message.Blocks.BlockSet
-	blocks[len(blocks)-1] = slack.SectionBlock{
-		Type: "section",
-		Text: &slack.TextBlockObject{Type: "mrkdwn", Text: fmt.Sprintf("_%s <@%s>_", action, pl.User.ID)},
+	if err != nil {
+		return err
 	}
-
+	blocks := pl.Message.Blocks.BlockSet
+	blck := slack.NewContextBlock("approval-ctx", &slack.TextBlockObject{
+		Type: "mrkdwn", Text: fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
+		Emoji: false,
+		Verbatim: false,
+	})
+	blocks[len(blocks)-1] = blck
 	_, _, _, err = webClient.UpdateMessage(pl.Channel.ID, pl.Message.Timestamp, slack.MsgOptionBlocks(pl.Message.Blocks.BlockSet...))
 	return err
 	// we will limit to only multi branch pipeline for now

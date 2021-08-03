@@ -38,7 +38,7 @@ spec:
           sh "go get gotest.tools/gotestsum"
           sh "go mod vendor"
           sh "go vet ./..."
-          sh "gotestsum --format dots --junitfile report.xml"
+          sh "gotestsum --format testname --junitfile report.xml"
         }
       }
       post {
