@@ -22,7 +22,7 @@ podTemplate(inheritFrom: "golang sonar") {
   }
   }
 }
-podTemplate(inheritFrom: "builder golang helm") {
+podTemplate(inheritFrom: "golang helm builder") {
 node(POD_LABEL) {
   stage("Deployment") {
     unstash "${env.BUILD_TAG}"
