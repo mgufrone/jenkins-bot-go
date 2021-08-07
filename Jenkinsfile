@@ -21,7 +21,7 @@ pipeline {
           junit "report.xml"
           withSonarQubeEnv("sonar") {
             container('sonar') {
-              sh('sonar-scanner -Dsonar.login=$SONAR_LOGIN')
+              sh('sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=600')
             }
           }
         }
