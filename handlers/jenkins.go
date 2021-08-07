@@ -173,9 +173,9 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 	json.Unmarshal(by, &pl)
 	splits := strings.SplitAfterN(pl.ActionCallback.BlockActions[0].Value, ":", 2)
 	action := strings.Replace(splits[0], ":", "", -1)
-	jenkinsUri, _ := url.Parse(splits[1])
-	repo, branch, buildID := parseJenkinsURL(jenkinsUri.Path)
-	cli := newJenkinsClient(jenkinsUri.Host, repo, branch, buildID)
+	jenkinsURI, _ := url.Parse(splits[1])
+	repo, branch, buildID := parseJenkinsURL(jenkinsURI.Path)
+	cli := newJenkinsClient(jenkinsURI.Host, repo, branch, buildID)
 	err := cli.submitInput(action)
 	client.Ack(*req)
 	if err != nil {
@@ -184,7 +184,7 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 	blocks := pl.Message.Blocks.BlockSet
 	blck := slack.NewContextBlock("approval-ctx", &slack.TextBlockObject{
 		Type: "mrkdwn", Text: fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
-		Emoji: false,
+		Emoji:    false,
 		Verbatim: false,
 	})
 	blocks[len(blocks)-1] = blck
