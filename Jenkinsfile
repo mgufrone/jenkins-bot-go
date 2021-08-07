@@ -4,9 +4,6 @@ pipeline {
       inheritFrom "helm builder sonar golang"
     }
   }
-  environment {
-    GITHUB = credentials('github')
-  }
   stages {
     stage("Build") {
       steps {
@@ -35,6 +32,7 @@ pipeline {
         container('kaniko') {
           script {
             env.IMAGE_TAG = env.GIT_COMMIT.substring(0, 6)
+            sh "ls -lah /kaniko/.docker"
             sh "/kaniko/executor --context . --dockerfile ./Dockerfile --destination ghcr.io/mgufrone/jenkins-bot:${env.GIT_BRANCH} --destination ghcr.io/mgufrone/jenkins-bot:${env.IMAGE_TAG}"
           }
         }
