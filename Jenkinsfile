@@ -4,7 +4,7 @@ import com.mgufron.RunInLog
 
 slack = new SlackSectionedMessage(this, "#general")
 runner = new RunInLog(slack, true)
-slack.sendMessage(slack.message("Building started: <${env.BUILD_URL}|${env.BUILD_TAG}>"))
+slack.sendMessage(slack.message("Building started: <${env.RUN_DISPLAY_URL}|${env.BUILD_TAG}>"))
 try {
   runner.run(message: "Setup") {
     podTemplate(inheritFrom: "golang sonar") {
