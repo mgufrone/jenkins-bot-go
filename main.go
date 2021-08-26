@@ -24,16 +24,16 @@ func slackApi() *slack.Client {
 		slack.OptionLog(log.New(os.Stdout, "api: ", log.Lshortfile|log.LstdFlags)),
 	)
 }
-func socketClient(webApi *slack.Client) *socketmode.Client {
+func socketClient(apiClient *slack.Client) *socketmode.Client {
 	return socketmode.New(
-		webApi,
+		apiClient,
 		socketmode.OptionDebug(true),
 		socketmode.OptionLog(log.New(os.Stdout, "sm: ", log.Lshortfile|log.LstdFlags)),
 	)
 }
 
-func testAuth(webApi *slack.Client) (*slack.AuthTestResponse, error) {
-	return webApi.AuthTest()
+func testAuth(apiClient *slack.Client) (*slack.AuthTestResponse, error) {
+	return apiClient.AuthTest()
 }
 
 func start(sockCli *socketmode.Client, webCli *slack.Client, lifecycle fx.Lifecycle, out InHandlers) {
@@ -45,7 +45,9 @@ func start(sockCli *socketmode.Client, webCli *slack.Client, lifecycle fx.Lifecy
 						if event.Type == run.EventType {
 							eventPayload, _ := event.Data.(slack.InteractionCallback)
 							if eventPayload.Type == run.InteractionType {
-								run.Handler(webCli, sockCli, event.Request)
+								if err := run.Handler(webCli, sockCli, event.Request); err != nil {
+									log.Print("error", err)
+								}
 							}
 						}
 					}

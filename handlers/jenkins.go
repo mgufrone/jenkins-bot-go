@@ -44,7 +44,7 @@ func newJenkinsClient(host, repo, branch string, buildID int) *jenkinsClient {
 func (cli *jenkinsClient) request(req *http.Request) (*http.Response, error) {
 	timer, cancel := context.WithTimeout(context.Background(), time.Second*15)
 	defer cancel()
-	req.WithContext(timer)
+	req = req.WithContext(timer)
 	req.URL.Host = cli.host
 	req.URL.Scheme = "https"
 	req.SetBasicAuth(cli.username, cli.password)
@@ -170,9 +170,11 @@ func parseJenkinsURL(str string) (repo, branch string, buildID int) {
 func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *socketmode.Request) error {
 	by, _ := req.Payload.MarshalJSON()
 	var pl slack.InteractionCallback
-	json.Unmarshal(by, &pl)
+	if err := json.Unmarshal(by, &pl); err != nil {
+		return err
+	}
 	splits := strings.SplitAfterN(pl.ActionCallback.BlockActions[0].Value, ":", 2)
-	action := strings.Replace(splits[0], ":", "", -1)
+	action := strings.ReplaceAll(splits[0], ":", "")
 	jenkinsURI, _ := url.Parse(splits[1])
 	repo, branch, buildID := parseJenkinsURL(jenkinsURI.Path)
 	cli := newJenkinsClient(jenkinsURI.Host, repo, branch, buildID)
@@ -182,13 +184,15 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 		return err
 	}
 	blocks := pl.Message.Blocks.BlockSet
-	blck := slack.NewContextBlock("approval-ctx", &slack.TextBlockObject{
-		Type: "mrkdwn", Text: fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
+	blck := slack.NewSectionBlock(&slack.TextBlockObject{
+		Type: "mrkdwn",
+		Text: fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
 		Emoji:    false,
 		Verbatim: false,
-	})
+	}, nil, nil)
 	blocks[len(blocks)-1] = blck
-	_, _, _, err = webClient.UpdateMessage(pl.Channel.ID, pl.Message.Timestamp, slack.MsgOptionBlocks(pl.Message.Blocks.BlockSet...))
+	msgID, blockID, replID, err := webClient.UpdateMessage(pl.Channel.ID, pl.Message.Timestamp, slack.MsgOptionBlocks(pl.Message.Blocks.BlockSet...))
+	log.Println("replaced", msgID, blockID, replID, err)
 	return err
 	// we will limit to only multi branch pipeline for now
 	// get latest path
