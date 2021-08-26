@@ -180,13 +180,13 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 	cli := newJenkinsClient(jenkinsURI.Host, repo, branch, buildID)
 	err := cli.submitInput(action)
 	client.Ack(*req)
-	if err != nil {
-		return err
-	}
+	//if err != nil {
+	//	return err
+	//}
 	blocks := pl.Message.Blocks.BlockSet
 	blck := slack.NewSectionBlock(&slack.TextBlockObject{
-		Type: "mrkdwn",
-		Text: fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
+		Type:     "mrkdwn",
+		Text:     fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
 		Emoji:    false,
 		Verbatim: false,
 	}, nil, nil)
