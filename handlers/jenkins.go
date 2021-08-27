@@ -184,12 +184,11 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 	//	return err
 	//}
 	blocks := pl.Message.Attachments[0].Blocks.BlockSet
-	blck := slack.NewSectionBlock(&slack.TextBlockObject{
-		Type:     "mrkdwn",
-		Text:     fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
-		Emoji:    false,
+	blck := slack.NewContextBlock("approval-ctx", &slack.TextBlockObject{
+		Type: "mrkdwn", Text: fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
+		Emoji: false,
 		Verbatim: false,
-	}, nil, nil)
+	})
 	blocks[len(blocks)-1] = blck
 	msgID, blockID, replID, err := webClient.UpdateMessage(pl.Channel.ID, pl.Message.Timestamp, slack.MsgOptionBlocks(pl.Message.Blocks.BlockSet...))
 	log.Println("replaced", msgID, blockID, replID, err)
