@@ -183,7 +183,7 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 	//if err != nil {
 	//	return err
 	//}
-	blocks := pl.Message.Blocks.BlockSet
+	blocks := pl.Message.Attachments[0].Blocks.BlockSet
 	blck := slack.NewSectionBlock(&slack.TextBlockObject{
 		Type:     "mrkdwn",
 		Text:     fmt.Sprintf("_%s by <@%s>_", action, pl.User.ID),
