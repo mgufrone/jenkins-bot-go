@@ -190,7 +190,11 @@ func jenkinsHandler(webClient *slack.Client, client *socketmode.Client, req *soc
 		Verbatim: false,
 	})
 	blocks[len(blocks)-1] = blck
-	msgID, blockID, replID, err := webClient.UpdateMessage(pl.Channel.ID, pl.Message.Timestamp, slack.MsgOptionBlocks(pl.Message.Blocks.BlockSet...))
+	by, _ = json.Marshal(blocks)
+	log.Println("sending blocks", string(by))
+	attachment := pl.Message.Attachments[0]
+	attachment.Blocks.BlockSet = blocks
+	msgID, blockID, replID, err := webClient.UpdateMessage(pl.Channel.ID, pl.Message.Timestamp, slack.MsgOptionAttachments(attachment))
 	log.Println("replaced", msgID, blockID, replID, err)
 	return err
 	// we will limit to only multi branch pipeline for now
