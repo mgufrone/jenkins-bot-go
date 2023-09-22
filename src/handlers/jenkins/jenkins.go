@@ -46,24 +46,25 @@ func (j *Jenkins) Run(api *slack.Client, ws *socketmode.Client, evt socketmode.E
 	splits := strings.Split(pl.CallbackID, ":")
 	action := pl.ActionCallback.AttachmentActions[0].Value
 	jobName, buildIDStr := splits[0], splits[1]
-	j.logger.Infof("receiving action from %s", pl.CallbackID)
 	if strings.Contains(jobName, "/") {
 		jobName = strings.ReplaceAll(jobName, "/", "/job/")
 	}
 	buildID, _ := strconv.Atoi(buildIDStr)
+	logger := j.logger.WithField("job", jobName).WithField("buildID", buildID)
+	logger.Infof("acknowledging action")
 	ws.Ack(*evt.Request, map[string]interface{}{
 		"text": ":gh-loading: Submitting your action",
 	})
 	submitter := pl.User.ID
-	j.logger.Infof("inquire pending action info from %s build %d", jobName, buildID)
+	logger.Infof("inquire pending action info")
 	act, err := j.cli.GetPendingAction(jobName, buildID)
 	if err != nil {
 		return err
 	}
 	defer func() {
-		j.logger.Infof("action %s submitted", action)
+		logger.Infof("action %s submitted", action)
 	}()
-	j.logger.Infof("submitting action: %s", action)
+	logger.Infof("submitting action: %s", action)
 	if action == "approve" {
 		return j.cli.Approve(context.TODO(), act, submitter)
 	}

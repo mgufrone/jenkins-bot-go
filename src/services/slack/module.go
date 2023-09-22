@@ -13,10 +13,7 @@ var Module = fx.Module("slack_socket",
 	fx.Provide(
 		slackApi,
 		socketClient,
-		fx.Annotate(
-			NewSocketManager,
-			fx.ParamTags("", "", `group:"socket_subscribers"`),
-		),
+		NewSocketManager,
 	),
 	fx.Invoke(
 		func() error {

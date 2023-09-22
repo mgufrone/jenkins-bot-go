@@ -15,8 +15,16 @@ type SocketManager struct {
 	handlers []ISocketSubscriber
 }
 
-func NewSocketManager(web *slack.Client, socket *socketmode.Client, handlers []ISocketSubscriber, logger logrus.FieldLogger, lc fx.Lifecycle) *SocketManager {
-	mgr := &SocketManager{web: web, socket: socket, handlers: handlers, logger: logger}
+type ManagerParams struct {
+	fx.In
+	Slck     *slack.Client
+	Socket   *socketmode.Client
+	Handlers []ISocketSubscriber `group:"socket_subscribers"`
+	Logger   logrus.FieldLogger
+}
+
+func NewSocketManager(param ManagerParams, lc fx.Lifecycle) *SocketManager {
+	mgr := &SocketManager{web: param.Slck, socket: param.Socket, handlers: param.Handlers, logger: param.Logger}
 	lc.Append(fx.StartHook(func() error {
 		go mgr.Loop()
 		return mgr.socket.RunContext(context.TODO())
