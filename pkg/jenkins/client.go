@@ -62,6 +62,9 @@ func (cli *Client) Approve(ctx context.Context, act *PendingAction, submitter st
 	dt.Add("json", fmt.Sprintf(`{"parameter":[{"name":"SLACK_SUBMITTER", "value":"%s"}]}`, submitter))
 	targetURL.RawQuery = dt.Encode()
 	pipeReq, err := http.NewRequest("POST", act.ProceedURL, nil)
+	if err != nil {
+		return err
+	}
 	pipeReq.URL = targetURL
 	return cli.submitAction(ctx, pipeReq)
 }

@@ -30,7 +30,7 @@ func (s *SocketManager) Loop() {
 		for _, hndl := range s.handlers {
 			go func(handler ISocketSubscriber, evt socketmode.Event) {
 				s.logger.Debugf("check if %s can run the event %s", handler.Name(), evt.Type)
-				if !handler.When(event) {
+				if !handler.When(evt) {
 					return
 				}
 				_ = handler.Run(s.web, s.socket, evt)

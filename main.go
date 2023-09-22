@@ -25,7 +25,7 @@ func app() *fx.App {
 }
 
 func main() {
-	godotenv.Load()
+	_ = godotenv.Load()
 	a := app()
 
 	if err := a.Start(context.Background()); err != nil {
