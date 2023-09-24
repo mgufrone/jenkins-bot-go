@@ -12,7 +12,7 @@ var Module = fx.Module("slack_socket",
 	}),
 	fx.Provide(
 		slackApi,
-		socketClient,
+		slackBot,
 		NewSocketManager,
 	),
 	fx.Invoke(

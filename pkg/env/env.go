@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 var (
@@ -39,4 +40,10 @@ func Get(key string) string {
 func GetOr(key string, defVal string) string {
 	Default(key, defVal)
 	return Get(key)
+}
+
+func Int(key string) int {
+	val := Get(key)
+	res, _ := strconv.Atoi(val)
+	return res
 }

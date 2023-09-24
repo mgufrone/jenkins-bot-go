@@ -27,7 +27,10 @@ func NewSocketManager(param ManagerParams, lc fx.Lifecycle) *SocketManager {
 	mgr := &SocketManager{web: param.Slck, socket: param.Socket, handlers: param.Handlers, logger: param.Logger}
 	lc.Append(fx.StartHook(func() error {
 		go mgr.Loop()
-		return mgr.socket.RunContext(context.TODO())
+		go func() {
+			_ = mgr.socket.RunContext(context.TODO())
+		}()
+		return nil
 	}))
 	return mgr
 }

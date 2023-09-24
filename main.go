@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"github.com/joho/godotenv"
+	jenkins2 "github.com/mgufrone/jenkins-slackbot/internal/handlers/jenkins"
+	slack2 "github.com/mgufrone/jenkins-slackbot/internal/services/slack"
 	"github.com/mgufrone/jenkins-slackbot/pkg/jenkins"
 	"github.com/mgufrone/jenkins-slackbot/pkg/logger"
-	jenkins2 "github.com/mgufrone/jenkins-slackbot/src/handlers/jenkins"
-	slack2 "github.com/mgufrone/jenkins-slackbot/src/services/slack"
 	"go.uber.org/fx"
 	"log"
 	"os"

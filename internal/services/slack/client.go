@@ -26,15 +26,18 @@ func slackApi(logger logrus.FieldLogger) *slack2.Client {
 	return slack2.New(
 		env.Get("SLACK_BOT_TOKEN"),
 		slack2.OptionAppLevelToken(os.Getenv("SLACK_APP_TOKEN")),
-		slack2.OptionDebug(os.Getenv("APP_ENV") != "production"),
+		slack2.OptionDebug(env.Get("APP_ENV") != "production"),
 		slack2.OptionLog(slg),
 	)
 }
-func socketClient(apiClient *slack2.Client, logger logrus.FieldLogger) *socketmode.Client {
+
+func slackBot(cli *slack2.Client, logger logrus.FieldLogger) *socketmode.Client {
 	slg := &Logger{logger}
-	return socketmode.New(
-		apiClient,
-		socketmode.OptionDebug(true),
+	socketCli := socketmode.New(cli,
+		socketmode.OptionDebug(
+			env.Get("APP_ENV") != "production",
+		),
 		socketmode.OptionLog(slg),
 	)
+	return socketCli
 }
