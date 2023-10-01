@@ -29,7 +29,7 @@ func NewClient(logger logrus.FieldLogger) *Client {
 			parsedUrl, _ := url.Parse(env.Get("JENKINS_URL"))
 			req.URL.Host = parsedUrl.Host
 			req.URL.Scheme = parsedUrl.Scheme
-			req.SetBasicAuth(env.Get("JENKINS_USERNAME"), env.Get("JENKINS_PASSWORD"))
+			req.SetBasicAuth(env.Get("JENKINS_USERNAME"), env.Get("JENKINS_USER_API_TOKEN"))
 		})
 	return &Client{
 		cli,

@@ -15,7 +15,7 @@ var Module = fx.Module("jenkins",
 		return env.Requires(
 			"JENKINS_URL",
 			"JENKINS_USERNAME",
-			"JENKINS_PASSWORD",
+			"JENKINS_USER_API_TOKEN",
 		)
 	}),
 )

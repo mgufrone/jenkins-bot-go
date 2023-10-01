@@ -16,6 +16,7 @@ import (
 func main() {
 	_ = godotenv.Load()
 	a := fx.New(
+		fx.NopLogger,
 		bootstrap.Core,
 		slack2.Module,
 		jenkins2.Module,
