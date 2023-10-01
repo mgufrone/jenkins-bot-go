@@ -44,6 +44,7 @@ func (s *SocketManager) Loop() {
 				if !handler.When(evt) {
 					return
 				}
+				s.logger.Debugf("invoke %s on %s", handler.Name(), evt.Type)
 				_ = handler.Run(s.web, s.socket, evt)
 			}(hndl, event)
 		}

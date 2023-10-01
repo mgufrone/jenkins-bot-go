@@ -8,6 +8,7 @@ import (
 	"github.com/mgufrone/go-httpclient/interceptor"
 	"github.com/mgufrone/jenkins-slackbot/pkg/env"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"net/url"
 )
@@ -16,8 +17,13 @@ type Client struct {
 	cli httpclient.Client
 }
 
-func NewClient() *Client {
+func NewClient(logger logrus.FieldLogger) *Client {
 	cli := httpclient.Standard().
+		AddInterceptor(func(req *http.Request) {
+			go func() {
+				logger.Debugln("sending request to", req.Method, req.URL.String())
+			}()
+		}).
 		AddInterceptor(interceptor.Header("Content-Type", "application/json")).
 		AddInterceptor(func(req *http.Request) {
 			parsedUrl, _ := url.Parse(env.Get("JENKINS_URL"))

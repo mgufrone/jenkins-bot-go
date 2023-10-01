@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+const (
+	acknowledgeText = ":gh-loading: Submitting your action"
+)
+
 type Jenkins struct {
 	cli    *jenkins.Client
 	logger logrus.FieldLogger
@@ -34,25 +38,25 @@ func (j *Jenkins) Run(ctx context.Context, callback slack.InteractionCallback) (
 	logger := j.logger.WithField("job", jobName).WithField("buildID", buildID)
 	logger.Infof("acknowledging action")
 	res = slack.Message{}
-	res.Text = ":gh-loading: Submitting your action"
+	res.Text = acknowledgeText
 	res.ReplaceOriginal = true
 	defer func() {
 		submitter := callback.User.ID
-		logger.Infof("inquire pending action info")
+		logger.Debugf("inquire pending action info for %s:%d", jobName, buildID)
 		act, err := j.cli.GetPendingAction(jobName, buildID)
 		if err != nil {
 			logger.Errorln(err)
 			return
 		}
-		logger.Infof("submitting action: %s", action)
+		logger.Debugf("submitting action: %s", action)
 		if action == "approve" {
-			err = j.cli.Approve(context.TODO(), act, submitter)
+			err = j.cli.Approve(ctx, act, submitter)
 			if err != nil {
 				logger.Errorln(err)
 			}
 			return
 		}
-		err = j.cli.Abort(context.TODO(), act)
+		err = j.cli.Abort(ctx, act)
 		if err != nil {
 			logger.Errorln(err)
 		}
