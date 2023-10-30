@@ -12,7 +12,7 @@
 
 ### Overview
 
-[![Coverage Status](https://coveralls.io/repos/github/mgufrone/jenkins-bot-go/badge.svg)](https://coveralls.io/github/mgufrone/jenkins-bot-go)
+[![Coverage Status](https://coveralls.io/repos/github/mgufrone/jenkins-bot-go/badge.svg?branch=main)](https://coveralls.io/github/mgufrone/jenkins-bot-go?branch=main)
 
 Here's the diagram of the flow on what this repo is about
 ![flow](https://www.planttext.com/api/plantuml/svg/DOun4i8m30HxlK8ym4DFmIIKj7c14ZGXn9Q2fOJlOpEcrPxshZEdx7kASF8d9qRwMD1CCZF0dMLTn31SyQP-mO7bWRHjMG-AcFczipaKL1D3f6bjcSHcD3EwejKp_226lwYVV551FbZQVo6jhIdwLdEcKRDNKzc7Bnq1kiBBuYy0)
