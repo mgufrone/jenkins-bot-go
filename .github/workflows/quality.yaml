@@ -11,7 +11,6 @@ on:
 jobs:
   setup:
     name: Repo Setup
-    id: cache-npm
     runs-on: ubuntu-latest
     steps:
     - name: Set up Go
@@ -41,7 +40,7 @@ jobs:
 #        version: v1.55
     - name: Run Unit tests
       run: |
-        go test -race -coverpkg="./..." -covermode atomic -coverprofile=profile.cov ./...
+        go test -race -coverpkg="./..." -coverprofile=profile.cov ./...
     - name: Send coverage
       uses: shogo82148/actions-goveralls@v1
       with:
