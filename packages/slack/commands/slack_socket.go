@@ -40,7 +40,7 @@ func (c *Console) Handle(ctx console.Context) error {
 			by, _ := evt.Request.Payload.MarshalJSON()
 			//_ = json.Unmarshal(by, &callback)
 			logger.Info("publishing event", "interaction submitted")
-			c.evtManager.Job(&events.InteractionSubmitted{}, []event.Arg{
+			_ = c.evtManager.Job(&events.InteractionSubmitted{}, []event.Arg{
 				{Value: string(by), Type: "string"},
 			}).Dispatch()
 			c.socket.Ack(*evt.Request)

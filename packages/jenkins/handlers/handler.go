@@ -56,10 +56,12 @@ func (j *Jenkins) Run(ctx context.Context, payload string) error {
 	defer func() {
 		if err != nil {
 			logger.Error(err)
-			go facades.Event().Job(&events.ResponseURL{}, []event.Arg{
-				{Type: "string", Value: string(by)},
-				{Type: "string", Value: facades.Config().GetString("jenkins.text.error", "failed to submit action. Consult with the administrator. In the meantime, please take action manually")},
-			}).Dispatch()
+			go func() {
+				_ = facades.Event().Job(&events.ResponseURL{}, []event.Arg{
+					{Type: "string", Value: string(by)},
+					{Type: "string", Value: facades.Config().GetString("jenkins.text.error", "failed to submit action. Consult with the administrator. In the meantime, please take action manually")},
+				}).Dispatch()
+			}()
 		}
 	}()
 	handlerMap := map[string]func() error{
@@ -71,10 +73,12 @@ func (j *Jenkins) Run(ctx context.Context, payload string) error {
 			return j.svc.Reject(ctx, act)
 		},
 	}
-	go facades.Event().Job(&events.ResponseURL{}, []event.Arg{
-		{Type: "string", Value: string(by)},
-		{Type: "string", Value: acknowledgeText},
-	}).Dispatch()
+	go func() {
+		_ = facades.Event().Job(&events.ResponseURL{}, []event.Arg{
+			{Type: "string", Value: string(by)},
+			{Type: "string", Value: acknowledgeText},
+		}).Dispatch()
+	}()
 	if handler, ok := handlerMap[action]; ok {
 		err = handler()
 	}

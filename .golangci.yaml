@@ -1,0 +1,27 @@
+run:
+  concurrency: 2
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+linters:
+  enable:
+  - errcheck
+  - unused
+  - govet
+  - ineffassign
+  - bodyclose
+  - errcheck
+  - staticcheck
+  - gosimple
+  - prealloc
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+        - govet
+        - unused

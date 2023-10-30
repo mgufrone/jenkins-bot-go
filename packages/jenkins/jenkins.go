@@ -76,6 +76,7 @@ func (j *Jenkins) Reject(ctx context.Context, act contracts.PendingAction) (err 
 func (j *Jenkins) submitAction(ctx context.Context, req *http.Request) (err error) {
 	req = req.WithContext(ctx)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	defer req.Body.Close()
 	_, err = j.cli.Do(req)
 	return
 }
