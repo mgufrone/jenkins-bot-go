@@ -41,9 +41,9 @@ jobs:
 #      with:
 #        version: v1.55
     - name: Run Unit tests
-      shell: bash -xe
       run: |
-        go test -race -coverpkg ./... -coverprofile=profile.cov ./...
+        go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
+        go test -race -json -v -coverpkg ./... -coverprofile=coverprofile.txt ./... 2>&1 | tee /tmp/gotest.log | gotestfmts
     - name: Check coverage
       run: |
         cat profile.cov
