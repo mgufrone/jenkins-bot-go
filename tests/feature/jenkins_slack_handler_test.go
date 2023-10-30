@@ -123,7 +123,7 @@ func (s *JenkinsSlackHandlerSuite) TestFail3() {
 	s.Assert().NotNil(err)
 }
 func (s *JenkinsSlackHandlerSuite) TestFail4() {
-	facades.Event().Register(map[event.Event][]event.Listener{})
+	//facades.Event().Register(map[event.Event][]event.Listener{})
 	s.svc.On("GetPendingAction", mock2.AnythingOfType("string"), mock2.AnythingOfType("int")).Return(contracts.PendingAction{
 		AbortURL: "http://localhost/somewhere",
 	}, nil)
@@ -142,7 +142,7 @@ func (s *JenkinsSlackHandlerSuite) TestFail4() {
 	s.Assert().NotNil(err)
 }
 func (s *JenkinsSlackHandlerSuite) TestSuccessApprove() {
-	facades.Event().Register(map[event.Event][]event.Listener{})
+	//facades.Event().Register(map[event.Event][]event.Listener{})
 	s.svc.On("GetPendingAction", mock2.AnythingOfType("string"), mock2.AnythingOfType("int")).Return(contracts.PendingAction{
 		AbortURL: "http://localhost/somewhere",
 	}, nil)
