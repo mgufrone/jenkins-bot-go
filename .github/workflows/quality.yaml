@@ -41,13 +41,11 @@ jobs:
 #      with:
 #        version: v1.55
     - name: Run Unit tests
+      shell: bash -xe
       run: |
-        pwd
-        ls -lah
-        go test -race -coverpkg="mgufrone.dev/job-tracking/..." -coverprofile=profile.cov ./...
+        go test -race -coverpkg ./... -coverprofile=profile.cov ./...
     - name: Check coverage
       run: |
-        ls -lah
         cat profile.cov
     - name: Send coverage
       uses: shogo82148/actions-goveralls@v1
