@@ -40,6 +40,9 @@ jobs:
 #      uses: golangci/golangci-lint-action@v3
 #      with:
 #        version: v1.55
+    - name: Pre-test
+      run: |
+        cp .env.example .env
     - name: Run Unit tests
       run: |
         go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
