@@ -47,6 +47,7 @@ jobs:
         go test -race -coverpkg="mgufrone.dev/job-tracking/..." -coverprofile=profile.cov ./...
     - name: Check coverage
       run: |
+        ls -lah
         cat profile.cov
     - name: Send coverage
       uses: shogo82148/actions-goveralls@v1
