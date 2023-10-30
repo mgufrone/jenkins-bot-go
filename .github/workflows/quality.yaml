@@ -43,7 +43,7 @@ jobs:
     - name: Run Unit tests
       run: |
         go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
-        go test -race -json -v -coverpkg ./... -coverprofile=coverprofile.txt ./... 2>&1 | tee /tmp/gotest.log | gotestfmts
+        go test -race -json -v -coverpkg ./... -coverprofile=coverprofile.txt ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
     - name: Check coverage
       run: |
         cat profile.cov
