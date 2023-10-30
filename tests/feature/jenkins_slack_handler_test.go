@@ -15,48 +15,14 @@ import (
 	facades2 "mgufrone.dev/job-tracking/packages/jenkins/facades"
 	"mgufrone.dev/job-tracking/packages/jenkins/handlers"
 	"mgufrone.dev/job-tracking/tests"
+	"mgufrone.dev/job-tracking/tests/mocks"
 	"testing"
 )
-
-type mockJenkins struct {
-	mock2.Mock
-}
-
-func (m *mockJenkins) GetPendingAction(jobName string, buildID int) (contracts.PendingAction, error) {
-	vals := m.Called(jobName, buildID)
-	return vals.Get(0).(contracts.PendingAction), vals.Error(1)
-}
-
-func (m *mockJenkins) Approve(ctx context.Context, act contracts.PendingAction) error {
-	vals := m.Called(ctx, act)
-	return vals.Error(0)
-}
-
-func (m *mockJenkins) Reject(ctx context.Context, act contracts.PendingAction) error {
-	vals := m.Called(ctx, act)
-	return vals.Error(0)
-}
-
-type mockInteractionSubmitted struct {
-	mock2.Mock
-}
-
-func (m *mockInteractionSubmitted) Signature() string {
-	return "on_mock_interaction"
-}
-
-func (m *mockInteractionSubmitted) Queue(args ...any) event.Queue {
-	return m.Called(args...).Get(0).(event.Queue)
-}
-
-func (m *mockInteractionSubmitted) Handle(args ...any) error {
-	return m.Called(args...).Error(0)
-}
 
 type JenkinsSlackHandlerSuite struct {
 	suite.Suite
 	tests.TestCase
-	svc *mockJenkins
+	svc *mocks.MockJenkins
 }
 
 func TestJenkinsHandlerSuite(t *testing.T) {
@@ -67,7 +33,7 @@ func TestJenkinsHandlerSuite(t *testing.T) {
 func (s *JenkinsSlackHandlerSuite) SetupTest() {
 	//s.ht = httptest.NewServer(facades.Route())
 	//s.evtMock, s.task = mock.Event()
-	s.svc = &mockJenkins{}
+	s.svc = &mocks.MockJenkins{}
 	facades.App().Bind(jenkins.BindingHandler, func(app foundation.Application) (any, error) {
 		return handlers.NewJenkins(s.svc, facades.Log()), nil
 	})
