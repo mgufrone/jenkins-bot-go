@@ -17,8 +17,6 @@
 Here's the diagram of the flow on what this repo is about
 ![flow](https://www.planttext.com/api/plantuml/svg/DOun4i8m30HxlK8ym4DFmIIKj7c14ZGXn9Q2fOJlOpEcrPxshZEdx7kASF8d9qRwMD1CCZF0dMLTn31SyQP-mO7bWRHjMG-AcFczipaKL1D3f6bjcSHcD3EwejKp_226lwYVV551FbZQVo6jhIdwLdEcKRDNKzc7Bnq1kiBBuYy0)
 
-here is also the working demonstration on how this repository should work
-[![Demonstration](https://img.youtube.com/vi/kbix7WRzgLI/0.jpg)](https://youtu.be/kbix7WRzgLI)
 
 ### Requirements
 
