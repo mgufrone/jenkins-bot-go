@@ -6,15 +6,12 @@ import (
 	"github.com/goravel/framework/console"
 	"github.com/goravel/framework/contracts/foundation"
 	"github.com/goravel/framework/crypt"
-	"github.com/goravel/framework/database"
 	"github.com/goravel/framework/event"
 	"github.com/goravel/framework/facades"
 	"github.com/goravel/framework/filesystem"
-	"github.com/goravel/framework/grpc"
 	"github.com/goravel/framework/hash"
 	"github.com/goravel/framework/http"
 	"github.com/goravel/framework/log"
-	"github.com/goravel/framework/mail"
 	"github.com/goravel/framework/queue"
 	"github.com/goravel/framework/route"
 	"github.com/goravel/framework/schedule"
@@ -62,7 +59,8 @@ func init() {
 		//
 		// 32 character string, otherwise these encrypted strings
 		// will not be safe. Please do this before deploying an application!
-		"key": config.Env("APP_KEY", ""),
+		"key":  config.Env("APP_KEY", ""),
+		"mode": config.Env("APP_MODE", "aio"),
 
 		// Autoload service providers
 		//
@@ -72,15 +70,15 @@ func init() {
 		"providers": []foundation.ServiceProvider{
 			&log.ServiceProvider{},
 			&console.ServiceProvider{},
-			&database.ServiceProvider{},
+			//&database.ServiceProvider{},
 			&cache.ServiceProvider{},
 			&http.ServiceProvider{},
 			&route.ServiceProvider{},
 			&schedule.ServiceProvider{},
 			&event.ServiceProvider{},
 			&queue.ServiceProvider{},
-			&grpc.ServiceProvider{},
-			&mail.ServiceProvider{},
+			//&grpc.ServiceProvider{},
+			//&mail.ServiceProvider{},
 			&auth.ServiceProvider{},
 			&hash.ServiceProvider{},
 			&crypt.ServiceProvider{},
@@ -90,12 +88,12 @@ func init() {
 			&providers.AppServiceProvider{},
 			&providers.AuthServiceProvider{},
 			&providers.RouteServiceProvider{},
-			&providers.GrpcServiceProvider{},
+			//&providers.GrpcServiceProvider{},
 			&providers.ConsoleServiceProvider{},
 			&providers.QueueServiceProvider{},
 			&providers.EventServiceProvider{},
 			&providers.ValidationServiceProvider{},
-			&providers.DatabaseServiceProvider{},
+			//&providers.DatabaseServiceProvider{},
 			&gin.ServiceProvider{},
 			&jenkins.ServiceProvider{},
 			&slack.ServiceProvider{},

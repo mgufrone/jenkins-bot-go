@@ -12,7 +12,12 @@ func main() {
 
 	//Start http server by facades.Route().
 	go func() {
-		if err := facades.Route().Run("0.0.0.0:3000"); err != nil {
+		if facades.Config().GetString("app.mode") == "aio" {
+			facades.Artisan().Run([]string{".", "artisan", "slack:socket"}, false)
+		}
+	}()
+	go func() {
+		if err := facades.Route().Run(); err != nil {
 			facades.Log().Errorf("Route run error: %v", err)
 		}
 	}()

@@ -1,115 +1,128 @@
-<div align="center">
+# Jenkins-Slack Bot
 
-<img src="https://www.goravel.dev/logo.png" width="300" alt="Logo">
+## Table of contents
 
-[![Doc](https://pkg.go.dev/badge/github.com/goravel/framework)](https://pkg.go.dev/github.com/goravel/framework)
-[![Go](https://img.shields.io/github/go-mod/go-version/goravel/framework)](https://go.dev/)
-[![Release](https://img.shields.io/github/release/goravel/framework.svg)](https://github.com/goravel/framework/releases)
-[![Test](https://github.com/goravel/framework/actions/workflows/test.yml/badge.svg)](https://github.com/goravel/framework/actions)
-[![Report Card](https://goreportcard.com/badge/github.com/goravel/framework)](https://goreportcard.com/report/github.com/goravel/framework)
-[![Codecov](https://codecov.io/gh/goravel/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/goravel/framework)
-![License](https://img.shields.io/github/license/goravel/framework)
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Setup](#setup)
+- [Run the app](#running-the-app)
+- [Pipeline Example](#pipeline-example)
+- [Contribution](#contribution)
+- [TODO](#todo)
 
-</div>
+### Overview
 
-English | [中文](./README_zh.md)
+Here's the diagram of the flow on what this repo is about
+![flow](https://www.planttext.com/api/plantuml/svg/DOun4i8m30HxlK8ym4DFmIIKj7c14ZGXn9Q2fOJlOpEcrPxshZEdx7kASF8d9qRwMD1CCZF0dMLTn31SyQP-mO7bWRHjMG-AcFczipaKL1D3f6bjcSHcD3EwejKp_226lwYVV551FbZQVo6jhIdwLdEcKRDNKzc7Bnq1kiBBuYy0)
 
-## About Goravel
+here is also the working demonstration on how this repository should work
+[![Demonstration](https://img.youtube.com/vi/kbix7WRzgLI/0.jpg)](https://youtu.be/kbix7WRzgLI)
 
-Goravel is a web application framework with complete functions and good scalability. As a starting scaffolding to help
-Gopher quickly build their own applications.
+### Requirements
 
-The framework style is consistent with [Laravel](https://github.com/laravel/laravel), let Phper don't need to learn a
-new framework, but also happy to play around Golang! Tribute Laravel!
+- Slack app with socket mode enabled
+- Go >=1.20
 
-Welcome to star, PR and issues！
+### Setup
 
-## Getting started
+#### Create Slack App
+
+You have options regarding Slack app. You can create a new app dedicated for jenkins-bot-go and slack jenkins plugin. Or
+use existing app. Install it to your slack workspace.
+
+Get the App Token in `Settings -> Basic Information` section, scroll down and you will see App Token. Create a new and
+add these scopes:
+
+- `connections:write`
+- `authorization:read`
+
+![Screenshot](./screenshots/1-slack-app-token.png?raw=true "Slack App Token")
+
+Next, you need to obtain the Bot Token. Go to `Features -> OAuth & Permissions`.
+
+Go to Scopes section and add these OAuth Scope:
+
+- `chat:write`
+- `im:history`
+
+Scroll up and copy the bot token.
+![Screenshot](./screenshots/2-slack-bot-token.png?raw=true "Slack bot token")
+
+#### Setup jenkins-bot-go
+
+- Clone the repository
+- run this to download the dependencies
+
+```shell
+go mod download
+```
+
+- Copy `.env.example` and modify them according to your configuration
+    - for `JENKINS_URL`, you need to put your jenkins URL. for example: `http://jenkins.localhost`
+    - for `JENKINS_USERNAME`, you can use the current username (`admin` for example) you're logged in to your Jenkins.
+      Make sure you have access to the necessary pipeline jobs that is about to be integrated with the
+    - for `JENKINS_USER_API_TOKEN`, you can obtain it in your profile by clicking your name next to `Logout` button then
+      click `Configure`. Go to `API Token` section and create one for the jenkins bot go
+    - `SLACK_BOT_TOKEN` will be your slack bot token
+    - `SLACK_APP_TOKEN` will be your slack bot token
+    - `SLACK_DEFAULT_CHANNEL` set default channel to send the approval to 
+    - `APP_DEBUG` you can choose between `true` or `false`
+    - `APP_MODE` you can choose between `aio` or `standlone`. See more in [running the app](#running-the-app)
+
+### Running the app
+
+If you don't set the `APP_MODE`, the default value would be `aio`. That means both HTTP API and Slack bot will run at the same command
+
+```shell
+go run .
+```
+
+If you choose run them separately, set the `APP_MODE` to `standalone`. Then you can run the slack bot with
+```shell
+go run . artisan slack:socket
+```
+
+### Pipeline Example
+
+Create a new pipeline and copy this to see if it's working fine
 
 ```
-// Generate APP_KEY
-go run . artisan key:generate
-
-// Route
-facades.Route().Get("/", userController.Show)
-
-// ORM
-facades.Orm().Query().With("Author").First(&user)
-
-// Task Scheduling
-facades.Schedule().Command("send:emails name").EveryMinute()
-
-// Log
-facades.Log().Debug(message)
-
-// Cache
-value := facades.Cache().Get("goravel", "default")
-
-// Queues
-err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
+stage("Setup") {
+  node('master') {
+    def host = "http://slack-bot.dev:3000/"
+    def data = [
+        "build_number": env.BUILD_NUMBER,
+        "build_name": env.JOB_NAME,
+        "message": "approval for ${env.JOB_NAME}"
+    ]
+    def json = JsonOutput.toJson(data)
+    sh "curl -X POST -H 'Content-Type: application/json' ${host}/approval/jenkins --data '${json}'" 
+  } 
+  input("Approval required before proceeding deployment")
+}
 ```
 
-## Documentation
+You can also build the binary and put it in your server or even build it in container and deploy it in your cluster.
 
-Online documentation [https://www.goravel.dev](https://www.goravel.dev)
+### Contribution
 
-Example [https://github.com/goravel/example](https://github.com/goravel/example)
+PR or Issue submission are very much welcome. I will do my best to engage and resolve the said items.
 
-> To optimize the documentation, please submit a PR to the documentation
-> repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
+### Support
 
-## Main Function
+Issues will be reviewed and resolved at best effort.
+However, if you need further assistance, do not hesitate to contact me at [my email](mailto:mgufronefendi@gmail.com)
 
-|             |                      |                      |                      |
-| ----------  | --------------       | --------------       | --------------       |
-| [Config](https://www.goravel.dev/getting-started/configuration.html)   | [Http](https://www.goravel.dev/the-basics/routing.html)  | [Authentication](https://www.goravel.dev/security/authentication.html)  | [Authorization](https://www.goravel.dev/security/authorization.html)  |
-| [Orm](https://www.goravel.dev/ORM/getting-started.html)   | [Migrate](https://www.goravel.dev/ORM/migrations.html)  | [Logger](https://www.goravel.dev/the-basics/logging.html)  | [Cache](https://www.goravel.dev/digging-deeper/cache.html)  |
-| [Grpc](https://www.goravel.dev/the-basics/grpc.html)   | [Artisan Console](https://www.goravel.dev/digging-deeper/artisan-console.html)  | [Task Scheduling](https://www.goravel.dev/digging-deeper/task-scheduling.html)  | [Queue](https://www.goravel.dev/digging-deeper/queues.html)  |
-| [Event](https://www.goravel.dev/digging-deeper/event.html)   | [FileStorage](https://www.goravel.dev/digging-deeper/filesystem.html)  | [Mail](https://www.goravel.dev/digging-deeper/mail.html)  | [Validation](https://www.goravel.dev/the-basics/validation.html)  |
-| [Mock](https://www.goravel.dev/digging-deeper/mock.html)   | [Hash](https://www.goravel.dev/security/hashing.html)  | [Crypt](https://www.goravel.dev/security/encryption.html)  | [Carbon](https://www.goravel.dev/digging-deeper/helpers.html)  |
-| [Package Development](https://www.goravel.dev/digging-deeper/package-development.html)   | [Testing](https://www.goravel.dev/testing/getting-started.html) |   |   |
+### TODO
 
-## Roadmap
-
-[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen)
-
-## Excellent Extend Packages
-
-[For Detail](https://goravel.dev/prologue/packages.html)
-
-## Contributors
-
-This project exists thanks to all the people who contribute, to participate in the contribution, please see [Contribution Guide](https://goravel.dev/prologue/contributions.html).
-
-<a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
-<a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
-<a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
-<a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48"></a>
-<a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48"></a>
-<a href="https://github.com/sidshrivastav" target="_blank"><img src="https://avatars.githubusercontent.com/u/28773690?v=4" width="48" height="48"></a>
-<a href="https://github.com/Juneezee" target="_blank"><img src="https://avatars.githubusercontent.com/u/20135478?v=4" width="48" height="48"></a>
-<a href="https://github.com/dragoonchang" target="_blank"><img src="https://avatars.githubusercontent.com/u/1432336?v=4" width="48" height="48"></a>
-<a href="https://github.com/dhanusaputra" target="_blank"><img src="https://avatars.githubusercontent.com/u/35093673?v=4" width="48" height="48"></a>
-<a href="https://github.com/mauri870" target="_blank"><img src="https://avatars.githubusercontent.com/u/10168637?v=4" width="48" height="48"></a>
-<a href="https://github.com/Marian0" target="_blank"><img src="https://avatars.githubusercontent.com/u/624592?v=4" width="48" height="48"></a>
-<a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
-<a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
-<a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
-
-## Sponsor
-
-Better development of the project is inseparable from your support, reward us by [Open Collective](https://opencollective.com/goravel).
-
-<p align="left"><img src="https://www.goravel.dev/reward.png" width="200"></p>
-
-## Group
-
-Welcome more discussion in Telegram.
-
-[https://t.me/goravel](https://t.me/goravel)
-
-<p align="left"><img src="https://www.goravel.dev/telegram.jpg" width="200"></p>
-
-## License
-
-The Goravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- [x] Initial Release
+- [ ] Expand to other communication channel
+    - [x] Slack
+    - [ ] Telegram
+    - [ ] Mattermost
+    - [ ] ...
+- [ ] Integrate to other CI/CD tools if possible
+  - [x] Jenkins
+  - [ ] Gitlab
+- [x] Allow Jenkins to directly send API request to jenkins-bot-go that will send approval message to Slack
+- [ ] Security Layer
