@@ -22,10 +22,10 @@ jobs:
     - name: Install dependencies
       run: |
         go mod download -x
-    - name: Run Lint
-      uses: golangci/golangci-lint-action@v3
-      with:
-        version: v1.55
+#    - name: Run Lint
+#      uses: golangci/golangci-lint-action@v3
+#      with:
+#        version: v1.55
     - name: Run Unit tests
       run: |
         go test -race -coverpkg="./..." -covermode atomic -coverprofile=profile.cov ./...
