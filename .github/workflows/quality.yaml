@@ -11,6 +11,7 @@ on:
 jobs:
   setup:
     name: Repo Setup
+    id: cache-npm
     runs-on: ubuntu-latest
     steps:
     - name: Set up Go
@@ -19,6 +20,18 @@ jobs:
         go-version: '1.21'
     - name: Check out code
       uses: actions/checkout@v2
+    - name: Cache node modules
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-go-mod
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/go/pkg
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
     - name: Install dependencies
       run: |
         go mod download -x
