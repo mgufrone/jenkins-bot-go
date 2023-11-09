@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/goravel/framework/contracts/http"
 	"github.com/slack-go/slack"
-	"mgufrone.dev/job-tracking/app/http/requests"
-	facades2 "mgufrone.dev/job-tracking/packages/slack/facades"
+	"mgufrone.dev/jenkins-bot-go/app/http/requests"
+	facades2 "mgufrone.dev/jenkins-bot-go/packages/slack/facades"
 )
 
 type RequestApproval struct {

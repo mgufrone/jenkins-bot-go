@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"github.com/goravel/framework/foundation"
 
-	"mgufrone.dev/job-tracking/config"
+	"mgufrone.dev/jenkins-bot-go/config"
 )
 
 func Boot() {

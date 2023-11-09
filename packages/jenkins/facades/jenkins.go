@@ -3,8 +3,8 @@ package facades
 import (
 	"log"
 
-	"mgufrone.dev/job-tracking/packages/jenkins"
-	"mgufrone.dev/job-tracking/packages/jenkins/contracts"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/contracts"
 )
 
 func Jenkins() contracts.Jenkins {

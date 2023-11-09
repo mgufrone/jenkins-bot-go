@@ -5,7 +5,7 @@ import (
 	"github.com/goravel/framework/contracts/foundation"
 	"github.com/goravel/framework/facades"
 
-	"mgufrone.dev/job-tracking/database/seeders"
+	"mgufrone.dev/jenkins-bot-go/database/seeders"
 )
 
 type DatabaseServiceProvider struct {

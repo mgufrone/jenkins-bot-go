@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/goravel/framework/facades"
 
-	"mgufrone.dev/job-tracking/bootstrap"
+	"mgufrone.dev/jenkins-bot-go/bootstrap"
 )
 
 func main() {

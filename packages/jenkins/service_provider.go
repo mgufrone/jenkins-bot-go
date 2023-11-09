@@ -5,8 +5,8 @@ import (
 	"github.com/goravel/framework/contracts/route"
 	"github.com/mgufrone/go-httpclient"
 	"github.com/mgufrone/go-httpclient/interceptor"
-	"mgufrone.dev/job-tracking/packages/jenkins/contracts"
-	"mgufrone.dev/job-tracking/packages/jenkins/handlers"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/contracts"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/handlers"
 	"net/http"
 	"net/url"
 )
@@ -49,7 +49,7 @@ func (receiver *ServiceProvider) Register(app foundation.Application) {
 
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
 	rt := app.MakeRoute()
-	app.Publishes("mgufrone.dev/job-tracking/packages/jenkins", map[string]string{
+	app.Publishes("mgufrone.dev/jenkins-bot-go/packages/jenkins", map[string]string{
 		"config/jenkins.go": app.ConfigPath("jenkins.go"),
 	})
 	rt.Prefix("/approval").Group(func(router route.Router) {

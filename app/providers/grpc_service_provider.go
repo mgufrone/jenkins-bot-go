@@ -4,8 +4,8 @@ import (
 	"github.com/goravel/framework/contracts/foundation"
 	"github.com/goravel/framework/facades"
 
-	"mgufrone.dev/job-tracking/app/grpc"
-	"mgufrone.dev/job-tracking/routes"
+	"mgufrone.dev/jenkins-bot-go/app/grpc"
+	"mgufrone.dev/jenkins-bot-go/routes"
 )
 
 type GrpcServiceProvider struct {

@@ -6,7 +6,7 @@ import (
 	"github.com/goravel/framework/contracts/event"
 	"github.com/goravel/framework/facades"
 	"github.com/slack-go/slack/socketmode"
-	"mgufrone.dev/job-tracking/packages/slack/events"
+	"mgufrone.dev/jenkins-bot-go/packages/slack/events"
 )
 
 type Console struct {

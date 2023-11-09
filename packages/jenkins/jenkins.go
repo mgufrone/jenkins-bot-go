@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/mgufrone/go-httpclient"
 	"github.com/pkg/errors"
-	"mgufrone.dev/job-tracking/packages/jenkins/contracts"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/contracts"
 	"net/http"
 	"net/url"
 	"strings"

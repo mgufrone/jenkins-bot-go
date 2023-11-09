@@ -3,7 +3,7 @@ package listeners
 import (
 	"context"
 	"github.com/goravel/framework/contracts/event"
-	facades2 "mgufrone.dev/job-tracking/packages/jenkins/facades"
+	facades2 "mgufrone.dev/jenkins-bot-go/packages/jenkins/facades"
 )
 
 type OnInteractionSubmitted struct {

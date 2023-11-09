@@ -4,9 +4,9 @@ import (
 	"github.com/goravel/framework/contracts/event"
 	"github.com/goravel/framework/contracts/foundation"
 	"github.com/goravel/framework/facades"
-	"mgufrone.dev/job-tracking/packages/jenkins/listeners"
-	"mgufrone.dev/job-tracking/packages/slack/events"
-	listeners2 "mgufrone.dev/job-tracking/packages/slack/listeners"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/listeners"
+	"mgufrone.dev/jenkins-bot-go/packages/slack/events"
+	listeners2 "mgufrone.dev/jenkins-bot-go/packages/slack/listeners"
 )
 
 type EventServiceProvider struct {

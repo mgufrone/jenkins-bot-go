@@ -6,7 +6,7 @@ import (
 	"github.com/goravel/framework/contracts/log"
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/socketmode"
-	"mgufrone.dev/job-tracking/packages/slack/commands"
+	"mgufrone.dev/jenkins-bot-go/packages/slack/commands"
 )
 
 const Binding = "slack.service"
@@ -62,7 +62,7 @@ func (receiver *ServiceProvider) Register(app foundation.Application) {
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
 	cli, _ := app.Make(BindingSocket)
 	eventManager := app.MakeEvent()
-	app.Publishes("mgufrone.dev/job-tracking/packages/slack", map[string]string{
+	app.Publishes("mgufrone.dev/jenkins-bot-go/packages/slack", map[string]string{
 		"config/slack.go": app.ConfigPath("slack.go"),
 	})
 	app.Commands([]console.Command{

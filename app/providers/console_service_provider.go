@@ -4,7 +4,7 @@ import (
 	"github.com/goravel/framework/contracts/foundation"
 	"github.com/goravel/framework/facades"
 
-	"mgufrone.dev/job-tracking/app/console"
+	"mgufrone.dev/jenkins-bot-go/app/console"
 )
 
 type ConsoleServiceProvider struct {

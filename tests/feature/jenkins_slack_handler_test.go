@@ -10,12 +10,12 @@ import (
 	"github.com/slack-go/slack"
 	mock2 "github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
-	"mgufrone.dev/job-tracking/packages/jenkins"
-	"mgufrone.dev/job-tracking/packages/jenkins/contracts"
-	facades2 "mgufrone.dev/job-tracking/packages/jenkins/facades"
-	"mgufrone.dev/job-tracking/packages/jenkins/handlers"
-	"mgufrone.dev/job-tracking/tests"
-	"mgufrone.dev/job-tracking/tests/mocks"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/contracts"
+	facades2 "mgufrone.dev/jenkins-bot-go/packages/jenkins/facades"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/handlers"
+	"mgufrone.dev/jenkins-bot-go/tests"
+	"mgufrone.dev/jenkins-bot-go/tests/mocks"
 	"testing"
 )
 

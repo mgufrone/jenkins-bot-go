@@ -19,10 +19,10 @@ import (
 	"github.com/goravel/framework/testing"
 	"github.com/goravel/framework/validation"
 	"github.com/goravel/gin"
-	"mgufrone.dev/job-tracking/packages/jenkins"
-	"mgufrone.dev/job-tracking/packages/slack"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins"
+	"mgufrone.dev/jenkins-bot-go/packages/slack"
 
-	"mgufrone.dev/job-tracking/app/providers"
+	"mgufrone.dev/jenkins-bot-go/app/providers"
 )
 
 // Boot Start all init methods of the current folder to bootstrap all config.

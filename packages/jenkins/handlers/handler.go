@@ -8,8 +8,8 @@ import (
 	"github.com/goravel/framework/contracts/log"
 	"github.com/goravel/framework/facades"
 	"github.com/slack-go/slack"
-	"mgufrone.dev/job-tracking/packages/jenkins/contracts"
-	"mgufrone.dev/job-tracking/packages/slack/events"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/contracts"
+	"mgufrone.dev/jenkins-bot-go/packages/slack/events"
 	"strconv"
 	"strings"
 )

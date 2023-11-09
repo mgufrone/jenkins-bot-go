@@ -4,8 +4,8 @@ import (
 	slack2 "github.com/slack-go/slack"
 	"log"
 
-	"mgufrone.dev/job-tracking/packages/slack"
-	"mgufrone.dev/job-tracking/packages/slack/contracts"
+	"mgufrone.dev/jenkins-bot-go/packages/slack"
+	"mgufrone.dev/jenkins-bot-go/packages/slack/contracts"
 )
 
 func Slack() contracts.Slack {

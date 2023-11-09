@@ -4,8 +4,8 @@ import (
 	"github.com/goravel/framework/contracts/foundation"
 	"github.com/goravel/framework/facades"
 
-	"mgufrone.dev/job-tracking/app/http"
-	"mgufrone.dev/job-tracking/routes"
+	"mgufrone.dev/jenkins-bot-go/app/http"
+	"mgufrone.dev/jenkins-bot-go/routes"
 )
 
 type RouteServiceProvider struct {

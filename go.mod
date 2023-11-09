@@ -1,4 +1,4 @@
-module mgufrone.dev/job-tracking
+module mgufrone.dev/jenkins-bot-go
 
 go 1.20
 

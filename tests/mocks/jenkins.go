@@ -3,7 +3,7 @@ package mocks
 import (
 	"context"
 	mock2 "github.com/stretchr/testify/mock"
-	"mgufrone.dev/job-tracking/packages/jenkins/contracts"
+	"mgufrone.dev/jenkins-bot-go/packages/jenkins/contracts"
 )
 
 type MockJenkins struct {

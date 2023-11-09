@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/goravel/framework/contracts/event"
 	slack2 "github.com/slack-go/slack"
-	facades2 "mgufrone.dev/job-tracking/packages/slack/facades"
+	facades2 "mgufrone.dev/jenkins-bot-go/packages/slack/facades"
 )
 
 type OnResponseURL struct {
